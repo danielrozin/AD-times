@@ -8,10 +8,26 @@
 .nyt-post.single-post-blog {
     padding: 0 !important;
     border-top: 1px solid #e5e5e5;
+    overflow-x: hidden;
 }
 .nyt-post .single-blog-wrapper {
     max-width: 100%;
     margin: 0;
+    overflow-x: hidden;
+}
+/* Prevent horizontal scroll on the entire page for NYT posts */
+body.single-post {
+    overflow-x: hidden;
+}
+body.single-post main {
+    overflow-x: hidden;
+}
+
+/* -- Global box-sizing for all NYT elements -- */
+.nyt-post *,
+.nyt-post *::before,
+.nyt-post *::after {
+    box-sizing: border-box;
 }
 
 /* -- Article Header -- */
@@ -113,9 +129,10 @@ a.nyt-share-btn:hover {
 
 /* -- Featured Image -- */
 .nyt-featured-figure {
-    max-width: 1080px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0;
+    overflow: hidden;
 }
 .nyt-featured-figure img,
 .nyt-featured-figure .wp-post-image {
@@ -136,6 +153,30 @@ a.nyt-share-btn:hover {
     font-weight: 400;
     line-height: 1.85;
     color: #333;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+/* Prevent any content from overflowing */
+.nyt-article-body img,
+.nyt-article-body video,
+.nyt-article-body iframe,
+.nyt-article-body embed,
+.nyt-article-body object,
+.nyt-article-body table,
+.nyt-article-body pre {
+    max-width: 100% !important;
+    height: auto;
+    box-sizing: border-box;
+}
+.nyt-article-body .wp-block-image,
+.nyt-article-body .wp-block-embed,
+.nyt-article-body .wp-block-video,
+.nyt-article-body .wp-block-table,
+.nyt-article-body figure {
+    max-width: 100% !important;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 .nyt-article-body p {
     font-family: 'Libre Baskerville', Georgia, serif !important;
@@ -299,10 +340,11 @@ a.nyt-tag:hover {
 
 /* -- Related Articles -- */
 .nyt-related {
-    max-width: 1080px;
+    max-width: 100%;
     margin: 3rem auto 0;
     padding: 3rem 1.5rem;
     background: #f8f8f8;
+    overflow: hidden;
 }
 .nyt-related-heading {
     font-family: 'Playfair Display', Georgia, serif !important;
@@ -355,7 +397,7 @@ a.nyt-tag:hover {
     }
     .nyt-article-body blockquote,
     .nyt-article-body .wp-block-quote {
-        margin: 2rem -1rem !important;
+        margin: 2rem 0 !important;
     }
 }
 
