@@ -512,6 +512,57 @@ return $output;
 
 
 
+// Custom local avatars for authors
+add_filter('get_avatar_url', 'ad_times_local_avatar_url', 10, 3);
+function ad_times_local_avatar_url($url, $id_or_email, $args) {
+    $user_id = 0;
+    if (is_numeric($id_or_email)) {
+        $user_id = (int) $id_or_email;
+    } elseif (is_object($id_or_email) && isset($id_or_email->user_id)) {
+        $user_id = (int) $id_or_email->user_id;
+    } elseif (is_string($id_or_email)) {
+        $user = get_user_by('email', $id_or_email);
+        if ($user) $user_id = $user->ID;
+    }
+    $local_avatars = [
+        16 => '/wp-content/uploads/2026/03/author-sarah-mitchell.jpg',
+        17 => '/wp-content/uploads/2026/03/author-james-carter.jpg',
+        18 => '/wp-content/uploads/2026/03/author-rachel-bennett.jpg',
+        19 => '/wp-content/uploads/2026/03/author-michael-ross.jpg',
+        20 => '/wp-content/uploads/2026/03/author-emily-walker.jpg',
+    ];
+    if ($user_id && isset($local_avatars[$user_id])) {
+        return home_url($local_avatars[$user_id]);
+    }
+    return $url;
+}
+
+add_filter('get_avatar', 'ad_times_local_avatar_html', 10, 6);
+function ad_times_local_avatar_html($avatar, $id_or_email, $size, $default, $alt, $args = []) {
+    $user_id = 0;
+    if (is_numeric($id_or_email)) {
+        $user_id = (int) $id_or_email;
+    } elseif (is_object($id_or_email) && isset($id_or_email->user_id)) {
+        $user_id = (int) $id_or_email->user_id;
+    } elseif (is_string($id_or_email)) {
+        $user = get_user_by('email', $id_or_email);
+        if ($user) $user_id = $user->ID;
+    }
+    $local_avatars = [
+        16 => '/wp-content/uploads/2026/03/author-sarah-mitchell.jpg',
+        17 => '/wp-content/uploads/2026/03/author-james-carter.jpg',
+        18 => '/wp-content/uploads/2026/03/author-rachel-bennett.jpg',
+        19 => '/wp-content/uploads/2026/03/author-michael-ross.jpg',
+        20 => '/wp-content/uploads/2026/03/author-emily-walker.jpg',
+    ];
+    if ($user_id && isset($local_avatars[$user_id])) {
+        $url = home_url($local_avatars[$user_id]);
+        $class = isset($args['class']) ? (is_array($args['class']) ? implode(' ', $args['class']) : $args['class']) : 'avatar';
+        return '<img alt="' . esc_attr($alt) . '" src="' . esc_url($url) . '" class="' . esc_attr($class) . '" height="' . esc_attr($size) . '" width="' . esc_attr($size) . '" />';
+    }
+    return $avatar;
+}
+
 // TL;DR Styles
 add_action('wp_head', function () {
     if (!is_singular('post')) return;
