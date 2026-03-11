@@ -563,6 +563,27 @@ function ad_times_local_avatar_html($avatar, $id_or_email, $size, $default, $alt
     return $avatar;
 }
 
+// UTM tracking for adgpt.com links
+add_action('wp_footer', function () {
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var links = document.querySelectorAll('a[href*="adgpt.com"]');
+        var articleName = document.title.replace(/\s*[|\-–—].*$/, '').trim();
+        var slug = articleName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        links.forEach(function(link) {
+            try {
+                var url = new URL(link.href);
+                if (!url.searchParams.has('utm_source')) url.searchParams.set('utm_source', 'Ad-Times');
+                if (!url.searchParams.has('utm_medium')) url.searchParams.set('utm_medium', slug);
+                link.href = url.toString();
+            } catch(e) {}
+        });
+    });
+    </script>
+    <?php
+});
+
 // TL;DR Styles
 add_action('wp_head', function () {
     if (!is_singular('post')) return;
